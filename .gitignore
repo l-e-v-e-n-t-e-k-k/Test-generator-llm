@@ -1,0 +1,3 @@
+.coverage
+.venv_wsl/
+__pycache__/
