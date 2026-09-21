@@ -113,9 +113,8 @@ def read_source_code(file_path):
     return source_code
 
 def save_generated_tests(test_code, output_path):
-    with open(output_path, 'w') as file:
+    with open(output_path, 'w', encoding='utf-8') as file:
         file.write(test_code)
-    pass
 
 def clean_llm_response(text):
     cleaned_text = text.strip()
@@ -127,7 +126,7 @@ def path_to_module_name(path):
     path = Path(path)
 
     without_suffix = path.with_suffix("")
-    module_name = str(without_suffix).replace(os.sep, '.') 
+    module_name = str(without_suffix).replace(os.sep, '.')
     return module_name
 
 def main():
@@ -143,10 +142,9 @@ def main():
 
     print(generated_tests)
 
-    generated_tests = clean_llm_response(generated_tests)
-
     output_path = "generated_tests/test_generated.py"
     os.makedirs("generated_tests", exist_ok=True)
+    os.makedirs("results", exist_ok=True)
     save_generated_tests(generated_tests, output_path)
 
     pytest_result = run_pytest()
@@ -156,7 +154,7 @@ def main():
     pytest_stats = read_pytest_stats()
 
     if pytest_result.returncode != 0:
-        save_summary(pytest_stats, {}, "")
+        save_summary(pytest_stats, {})
         print("Pytest failed")
         print(pytest_result.stdout)
         print(pytest_result.stderr)
@@ -165,9 +163,9 @@ def main():
     run_coverage()
     coverage_stats = read_coverage_stats()
 
-   # run_mutation_testing()
+    # run_mutation_testing()
     
-   # mutation_stats = read_mutation_results()
+    # mutation_stats = read_mutation_results()
     
     save_summary(pytest_stats, coverage_stats)
 

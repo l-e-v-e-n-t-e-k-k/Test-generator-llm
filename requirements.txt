@@ -1,4 +1,4 @@
-pytest
-coverage
-requests
-# mutmut
+pytest>=8,<10
+coverage>=7,<8
+requests>=2,<3
+mutmut==2.4.5

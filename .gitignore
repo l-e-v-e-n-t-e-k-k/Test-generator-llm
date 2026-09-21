@@ -204,6 +204,10 @@ cython_debug/
 # Temporary file for partial code execution
 tempCodeRunnerFile.py
 
+# Mutation testing output
+mutants/
+.mutmut-cache
+
 # Ruff stuff:
 .ruff_cache/
 

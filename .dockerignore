@@ -1,0 +1,11 @@
+.git
+.venv
+.venv_wsl
+__pycache__
+*.py[cod]
+.pytest_cache
+.coverage
+htmlcov
+results
+mutants
+.mutmut-cache
