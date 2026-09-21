@@ -1,3 +1,5 @@
 .coverage
 .venv_wsl/
 __pycache__/
+.venv/
+.pytest_cache/
