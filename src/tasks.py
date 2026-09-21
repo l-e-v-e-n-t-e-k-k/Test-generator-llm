@@ -15,3 +15,7 @@ def divide(a, b):
         raise ValueError("cannot divide by zero")
     return a / b
 
+def read_source_code(source_path):
+    with open(source_path, 'r', encoding='utf-8') as file:
+        source_code = file.read()
+    return source_code

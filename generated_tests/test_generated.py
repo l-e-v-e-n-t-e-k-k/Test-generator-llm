@@ -1,5 +1,5 @@
 import pytest
-from src.tasks import calculate_discount, is_even, divide
+from src.tasks import calculate_discount, is_even, divide, read_source_code
 
 def test_calculate_discount_normal():
     assert calculate_discount(100, 10) == 90.0
@@ -36,3 +36,15 @@ def test_divide_normal():
 def test_divide_error():
     with pytest.raises(ValueError):
         divide(10, 0)
+
+def test_read_source_code():
+    # Create a dummy source file for testing
+    with open("temp_source.py", "w") as f:
+        f.write("def test_function():\n    pass\n")
+    result = read_source_code("temp_source.py")
+    assert result == "def test_function():\n    pass\n"
+
+    with open("temp_source.py", "w") as f:
+        f.write("")
+    result = read_source_code("temp_source.py")
+    assert result == ""

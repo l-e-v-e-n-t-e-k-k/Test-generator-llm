@@ -113,6 +113,36 @@ docker run --rm `
   local-llm-test-generator
 ```
 
+To test your own code, place a file named `my_tasks.py` in the current directory and mount it over the example source file:
+
+```powershell
+docker run --rm `
+  -v "${PWD}/my_tasks.py:/app/src/tasks.py:ro" `
+  -v "${PWD}/generated_tests:/app/generated_tests" `
+  -v "${PWD}/results:/app/results" `
+  local-llm-test-generator
+```
+
+The `:ro` option makes the source file read-only inside the container. The generated tests and reports are still saved on the host machine.
+
+### Use the Published Image
+
+The image is also available on Docker Hub, so the project can be used without building it locally:
+
+```powershell
+docker pull leventekk1/local-llm-test-generator:latest
+```
+
+Run the downloaded image and keep the generated files on the host machine:
+
+```powershell
+docker run --rm `
+  -v "${PWD}/my_tasks.py:/input/tasks.py:ro" `
+  -v "${PWD}/generated_tests:/app/generated_tests" `
+  -v "${PWD}/results:/app/results" `
+  leventekk1/local-llm-test-generator:latest
+```
+
 ## Mutation Testing
 
 mutmut does not support native Windows execution. The Docker image uses Linux, so mutation testing can run without WSL.
@@ -142,6 +172,18 @@ docker run --rm `
   -v "${PWD}:/app" `
   local-llm-test-generator python -m mutmut results
 ```
+
+To run only mutation testing with the published image, place `my_tasks.py` and the existing `generated_tests/test_generated.py` file in the current directory:
+
+```powershell
+docker run --rm `
+  -v "${PWD}/my_tasks.py:/input/tasks.py:ro" `
+  -v "${PWD}/generated_tests:/app/generated_tests:ro" `
+  leventekk1/local-llm-test-generator:latest `
+  sh -c "cp /input/tasks.py /app/src/tasks.py && python -m mutmut run --CI && python -m mutmut results"
+```
+
+This command uses the existing generated tests and does not call LM Studio. It does not replace the container's `/app` directory, so the mutation configuration included in the image remains available. The `--CI` option allows the command to continue when mutants survive, while fatal mutation testing errors still stop the process.
 
 ## Output
 
